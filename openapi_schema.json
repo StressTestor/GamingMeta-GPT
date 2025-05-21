@@ -1,0 +1,148 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GamingGPT Actions",
+    "description": "Action set for fetching patch notes, analyzing meta shifts, and suggesting builds.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.gaminggpt.dev",
+      "description": "Mock or placeholder server for GamingGPT actions"
+    }
+  ],
+  "paths": {
+    "/fetch-patch-notes": {
+      "get": {
+        "operationId": "fetchPatchNotes",
+        "summary": "Fetch latest patch notes for a game",
+        "parameters": [
+          {
+            "name": "game",
+            "in": "query",
+            "required": true,
+            "description": "The name of the game (e.g., 'League of Legends')",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Patch notes successfully fetched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "patch_notes": {
+                      "type": "string",
+                      "description": "The raw patch notes text"
+                    },
+                    "source_url": {
+                      "type": "string",
+                      "description": "URL of the official patch notes"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/analyze-meta-shift": {
+      "post": {
+        "operationId": "analyzeMetaShift",
+        "summary": "Analyze how a patch affects the game meta",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "game": { "type": "string" },
+                  "patch_notes": { "type": "string" },
+                  "meta_context": {
+                    "type": "string",
+                    "description": "Optional user-defined current meta context"
+                  }
+                },
+                "required": ["game", "patch_notes"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Meta impact analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "summary": { "type": "string" },
+                    "winners": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "losers": {
+                      "type": "array",
+                      "items": { "type": "string" }
+                    },
+                    "strategic_advice": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/suggest-build": {
+      "post": {
+        "operationId": "suggestBuild",
+        "summary": "Suggest a build based on patch and role",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "game": { "type": "string" },
+                  "character_or_class": { "type": "string" },
+                  "role": {
+                    "type": "string",
+                    "description": "e.g., 'DPS', 'Tank', 'Support', 'Sniper'"
+                  },
+                  "patch_notes": { "type": "string" }
+                },
+                "required": ["game", "character_or_class", "role", "patch_notes"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Build recommendation returned",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "recommended_build": {
+                      "type": "string",
+                      "description": "Formatted build suggestion with itemization and playstyle tips"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
